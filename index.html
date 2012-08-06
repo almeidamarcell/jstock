@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+    <!-- jquery dependencies -->
+    <!-- highstock dependencies -->
+
+    <link type="text/css" rel="stylesheet" href="css/jqx/styles/jqx.base.css"  />  
+    <link type="text/css" rel="stylesheet" href="css/jqx/styles/jqx.energyblue.css"  />  
+
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/stocks.js"></script>
+    <script type="text/javascript" src="js/jqx/jqxcore.js"></script>
+    <script type="text/javascript" src="js/jqx/jqx-all.js"></script>
+
+
+	<style type="text/css">
+
+	body {
+	  font-family:	Verdana,Arial,sans-serif;
+	  font-size: 13px;
+	}
+
+		.outer {
+ position:relative;
+ height:300px;
+ margin-left:100px;
+ margin-right:90px;
+ margin-top:30px;
+}
+.sidebar {
+ position:absolute;
+ top:0;
+ right:0;
+ width:200px;
+ /*border:1px red dotted;*/
+}
+.main {
+ position:absolute;
+ top:0;
+ width:800px;
+border:1px gray dotted;
+}
+	</style>
+
+</head>
+
+
+
+<body>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+    var theme = "energyblue"
+    var macd = false
+    var ifr = false
+    var period = "6m"
+    var ema13 = false
+    var ema30 = false
+    var ema60 = false
+    var ema150 = false
+    var volume = false
+    stockSelected = "VALE4" 	
+
+
+    $("#jqxlistbox").jqxListBox({ 
+        source: stocks, 
+        width: '150px', 
+        height: '250px', 
+        theme: theme,
+	selectedIndex:1
+    }).bind('select', function(event){
+	var args = event.args;
+	var item = $("#jqxlistbox").jqxListBox('getItem', args.index);
+	if(item != null){
+		stock = item.label
+		showChart()
+	}
+    }).jqxListBox('selectIndex', 2)
+
+
+    $("#macd").jqxCheckBox().bind('change', function(){
+	macd = $("#macd").jqxCheckBox('checked')
+    })
+    
+    $("#ifr").jqxCheckBox().bind('change', function(){
+	ifr = $("#ifr").jqxCheckBox('checked')
+    })		
+
+    $("#volume").jqxCheckBox().bind('change', function(){
+	volume = $("#volume").jqxCheckBox('checked')
+    })		
+
+
+    $("#ema13").jqxCheckBox().bind('change', function(){
+	ema13 = $("#ema13").jqxCheckBox('checked')
+    })		
+		
+
+    $("#ema30").jqxCheckBox().bind('change', function(){
+	ema30 = $("#ema30").jqxCheckBox('checked')
+    })
+
+    $("#ema60").jqxCheckBox().bind('change', function(){
+	ema60 = $("#ema60").jqxCheckBox('checked')
+    })
+
+
+    $("#ema150").jqxCheckBox().bind('change', function(){
+	ema150 = $("#ema150").jqxCheckBox('checked')
+    })
+
+
+    $("#1d").jqxRadioButton({height: 25, theme: theme }).bind('checked', function(){
+	period = "1d"
+    })
+    
+    $("#5d").jqxRadioButton({height: 25, theme: theme }).bind("checked", function(){
+	period = "5d"
+    })      
+            
+    $("#1m").jqxRadioButton({height: 25, theme: theme }).bind('checked', function(){
+	period = "1m"
+    })
+    
+    $("#3m").jqxRadioButton({height: 25,  theme: theme }).bind("checked", function(){
+	period = "3m"
+    })      
+
+    $("#6m").jqxRadioButton({height: 25, checked: true, theme: theme }).bind('checked', function(){
+	period = "6m"
+    })
+    
+    $("#1y").jqxRadioButton({height: 25, theme: theme }).bind("checked", function(){
+	period = "1y"
+    })      
+
+
+    $("#myButton").jqxButton(
+	{
+	  width: '100px',
+	  height: '25px',
+	  theme: 'energyblue'}).bind('click', function(event){
+		showChart()
+	  })
+    
+
+function showChart(){
+	url = "http://chart.finance.yahoo.com/z?s="+stock+".SA"
+	      t = "&t=" + period 
+	      q = "&q=c"  //candlestick
+	      l = "&l=on" //scale logarithmic
+	      z = "&z=l"  //zoom
+	      a = "&a="   //indicators
+	    
+	      url = url + t + q + l + z	+ a
+	    
+	      //selected indicators	
+	      if(macd){
+		url = url + "m26-12-9,"
+	      }
+	      
+	      if(ifr){
+		url= url + "r14,"
+	      }
+	      
+	      if(volume){
+		url= url + "v,"
+	      }
+	      
+	      
+	      p = "&p=" //exponencial moving average
+	      url = url + p
+	      
+	      if(ema13){
+		url = url + "e13,"
+	      }
+	      if(ema30){
+		url = url + "e30,"
+	      }
+	      if(ema60){
+		url = url + "e60,"
+	      }
+	      if(ema150){
+		url = url + "e150,"
+	      }
+	      
+	      $("#stock-chart").attr('src', url)
+}
+    
+    
+})
+
+</script>
+
+
+<div class="outer">
+
+ <div id="mainpanel" class="main">
+  <div class="content">
+    <p id="stock-title"></p>
+    <div >
+	<img  id="stock-chart" src="http://chart.finance.yahoo.com/z?s=VALE5.SA&t=6m&q=c&l=on&z=l&p=e13,e60,v&a=m26-12-9,r14,b"/>
+    </div>	
+  </div>
+  </div>
+
+  <div id="sidepanel" class="sidebar">
+    <b>Symbols:</b><br/><br/>
+    <div id='jqxlistbox'></div><br/>
+    <br/>
+    <br/>
+    <b>Indicators:</b><br/><br/>
+    <div id="macd">MACD</div>
+    <div id="ifr">RSI</div>
+    <div id="volume">Volume</div>
+    <div id="ema13">EMA-13</div>
+    <div id="ema30">EMA-30</div>
+    <div id="ema60">EMA-60</div>
+    <div id="ema150">EMA-150</div>
+    <br/>
+    <br/>
+    
+    <b>Period</b><br/><br/>
+    
+    <div id='1d'>1 Day</div>
+    <div id='5d'>5 Days</div>
+    <div id='1m'>1 Month</div>
+    <div id='3m'>3 Months</div>
+    <div id='6m'>6 Months</div>
+    <div id='1y'>1 year</div>
+  
+    <br/>	  
+    
+    <input type="button" value="Apply" id='myButton'/>
+    
+    <br/>
+    <br/>
+   </div>	
+
+
+    <div>
+
+    </div>
+<!--
+http://code.highcharts.com/
+http://code.google.com/p/yahoo-finance-managed/wiki/csvHistQuotesDownload
+curl http://ichart.yahoo.com/table.csv?s=VALE5.SA
+-->
+</div>
+
+
+
+ 
+</body>
+
+</html>
+

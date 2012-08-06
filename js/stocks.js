@@ -1,0 +1,13 @@
+var stocks = ["PETR4",
+              "VALE5",
+              "VALE3",
+              "HGTX3",
+              "GGBR3",
+              "GGBR4",
+              "USIM5",
+              "USIM3",
+              "OGXP3",
+              "MMXM3",
+              "EMBR3",
+              "LAME4",
+              "LLXL3"] 
