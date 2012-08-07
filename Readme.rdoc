@@ -10,6 +10,7 @@ Feel free to download, modify and copy (or throw in the trash :-) ) the source c
 
 
 jQWidgets: http://www.jqwidgets.com/
+
 Yahoo Finance API: link:http://code.google.com/p/yahoo-finance-managed/wiki/YahooFinanceAPIs
 
 
