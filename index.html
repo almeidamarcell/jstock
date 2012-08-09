@@ -47,7 +47,12 @@
  position:absolute;
  top:0;
  width:800px;
-border:1px gray dotted;
+ /*border:1px gray dotted;*/
+}
+
+.table-quote {
+    font-family:'Open Sans, Verdana, Helvetica';
+    font-size: 9pt;
 }
 	</style>
 
@@ -61,6 +66,8 @@ border:1px gray dotted;
 
 $(document).ready(function () {
 
+//http://download.finance.yahoo.com/d/quotes.csv?s=PETR4.SA&f=nsl1op
+
     var theme = "energyblue"
     var macd = false
     var ifr = false
@@ -70,7 +77,13 @@ $(document).ready(function () {
     var ema60 = false
     var ema150 = false
     var volume = false
-    stockSelected = "VALE4" 	
+        
+    var nameStock = "n0"
+    var changeInPercent = "p2"
+    var lastTradePrice = "l1"
+    var lastTradeTime = "t1"
+    var open = "o0"
+    var previewClose = "p0"        
 
 
     $("#jqxlistbox").jqxListBox({ 
@@ -85,6 +98,7 @@ $(document).ready(function () {
 	if(item != null){
 		stock = item.label
 		showChart()
+        getLastQuote()
 	}
     }).jqxListBox('selectIndex', 2)
 
@@ -152,6 +166,7 @@ $(document).ready(function () {
 	  height: '25px',
 	  theme: 'energyblue'}).bind('click', function(event){
 		showChart()
+        getLastQuote()
 	  })
     
 
@@ -197,6 +212,59 @@ function showChart(){
 	      
 	      $("#stock-chart").attr('src', url)
 }
+
+
+function getLastQuote(){
+
+    url = "http://download.finance.yahoo.com/d/quotes.csv?s="
+    url += stock + ".SA"
+    url += "&f=" + nameStock + changeInPercent + lastTradePrice + lastTradeTime
+    url += open + previewClose
+    
+   
+    htmlTable = '<table class="table-quote">'
+
+    htmlTable +='  <tr>'
+    htmlTable +='    <td><b>Name:</b></td><td id="td-name"></td>'
+    htmlTable +='    <td id="td-name"></td>'    
+    htmlTable +='  </tr>'
+
+    htmlTable +='  <tr>' 
+    htmlTable +='    <td><b>Change:</b></td><td id="td-name"></td>'
+    htmlTable +='    <td id="td-name"></td>'    
+    htmlTable +='  </tr>'
+
+    htmlTable +='  <tr>'
+    htmlTable +='   <td><b>Last Trade:</b></td><td id="td-name"></td>'
+    htmlTable +='   <td id="td-name"></td>'
+    htmlTable +='  </tr>'
+
+    htmlTable +='  <tr>'
+    htmlTable +='   <td><b>Time Last Trade:</b></td><td id="td-name"></td>'
+    htmlTable +='   <td id="td-name"></td>'
+    htmlTable +='  </tr>'
+
+    htmlTable +='  <tr>'
+    htmlTable +='     <td><b>Open:</b></td>'
+    htmlTable +='     <td id="td-name"> <img src="" ></img> </td>'
+    htmlTable +='  </tr>'
+
+    htmlTable +='  <tr>'
+    htmlTable +='     <td><b>Open:</b></td>'
+    htmlTable +='     <td id="td-name"> <img src="" ></img> </td>'
+    htmlTable +='  </tr>'
+
+    htmlTable +='  <tr>'
+    htmlTable +='     <td><b>Previous Close:</b></td>'
+    htmlTable +='     <td id="td-name"> </td>'
+    htmlTable +='  </tr>'
+
+    htmlTable +='</table>'
+        
+    $("#table-quote").append(url)
+
+
+}
     
     
 })
@@ -213,6 +281,8 @@ function showChart(){
 	<img  id="stock-chart" src="http://chart.finance.yahoo.com/z?s=VALE5.SA&t=6m&q=c&l=on&z=l&p=e13,e60,v&a=m26-12-9,r14,b"/>
     </div>	
   </div>
+
+     <div id="table-quote"></div>
   </div>
 
   <div id="sidepanel" class="sidebar">
