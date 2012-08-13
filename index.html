@@ -211,6 +211,8 @@ function showChart(){
 	      }
 	      
 	      $("#stock-chart").attr('src', url)
+	      $("#url-yahoo").empty()
+	      $("#url-yahoo").append(url)
 }
 
 
@@ -279,6 +281,7 @@ function getLastQuote(){
     <p id="stock-title"></p>
     <div >
 	<img  id="stock-chart" src="http://chart.finance.yahoo.com/z?s=VALE5.SA&t=6m&q=c&l=on&z=l&p=e13,e60,v&a=m26-12-9,r14,b"/>
+	url:<p id="url-yahoo" style="font-size:8pt;"><span>http://chart.finance.yahoo.com/z?s=VALE5.SA&t=6m&q=c&l=on&z=l&p=e13,e60,v&a=m26-12-9,r14,b</span></p>
     </div>	
   </div>
 
